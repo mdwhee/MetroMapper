@@ -123,7 +123,7 @@ def line(linedata, dwg):
 
         path.push(f"L {start[0]},{start[1]}")
         path.push_arc(target=end, rotation=0, r=r,
-                      large_arc=False, angle_dir=angle_dir)
+                      large_arc=False, angle_dir=angle_dir, absolute=True)
 
     # Line to last point
     path.push(f"L {pts[-1][0]},{pts[-1][1]}")
