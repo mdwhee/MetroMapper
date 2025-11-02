@@ -1,7 +1,7 @@
 import svgwrite
 import math
 
-def create_map(mapdata, filepath, grid=True):
+def create_map(mapdata, styledata, filepath, grid=True):
 
     bg = mapdata['background']
     width = bg['width']
@@ -13,7 +13,7 @@ def create_map(mapdata, filepath, grid=True):
         dwg.rect(
             insert = (0, 0),
             size = (width, height),
-            fill = bg['color']
+            fill = styledata['background_color']
         )
     )
 
@@ -29,7 +29,7 @@ def create_map(mapdata, filepath, grid=True):
                 dwg.line(
                     start = (xminor, 0),
                     end = (xminor, height),
-                    stroke = "#777777"
+                    stroke = styledata['grid_color'],
                 )
             )
             xminor += minor
@@ -38,7 +38,7 @@ def create_map(mapdata, filepath, grid=True):
                 dwg.line(
                     start = (0, yminor),
                     end = (width, yminor),
-                    stroke = '#777777'
+                    stroke = styledata['grid_color'],
                 )
             )
             yminor += minor
@@ -47,7 +47,7 @@ def create_map(mapdata, filepath, grid=True):
                 dwg.line(
                     start = (xmajor, 0),
                     end = (xmajor, height),
-                    stroke = '#777777',
+                    stroke = styledata['grid_color'],
                     stroke_width = 2
                 )
             )
@@ -57,7 +57,7 @@ def create_map(mapdata, filepath, grid=True):
                 dwg.line(
                     start = (0, ymajor),
                     end = (width, ymajor),
-                    stroke = '#777777',
+                    stroke = styledata['grid_color'],
                     stroke_width = 2
                 )
             )
@@ -65,7 +65,7 @@ def create_map(mapdata, filepath, grid=True):
 
     return dwg
 
-def line(linedata, dwg):
+def line(linedata, styledata, lgrp, sgrp):
     color = linedata.get('color', '#000000')
     width = linedata.get('width', 4)
     points = linedata.get('points', [])
@@ -82,7 +82,7 @@ def line(linedata, dwg):
         else:
             raise ValueError("Each point must be (x, y) or (x, y, radius)")
 
-    path = dwg.path(d=f"M {pts[0][0]},{pts[0][1]}", fill="none",
+    path = svgwrite.path.Path(d=f"M {pts[0][0]},{pts[0][1]}", fill="none",
                     stroke=color, stroke_width=width,
                     stroke_linecap="round", stroke_linejoin="round")
 
@@ -128,7 +128,15 @@ def line(linedata, dwg):
     # Line to last point
     path.push(f"L {pts[-1][0]},{pts[-1][1]}")
 
-    dwg.add(path)
+    # Stops
+    for stop in linedata.get('stops', []):
+        sx, sy = stop
+        stop_circle = svgwrite.shapes.Circle(center=(sx, sy), r=styledata['gap']/2-width/4,
+                                             fill=styledata['background_color'], stroke=color,
+                                             stroke_width=width/2)
+        sgrp.add(stop_circle)
+
+    lgrp.add(path)
     return path
 
 def station(mapdata, dwg):
