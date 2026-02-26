@@ -31,7 +31,7 @@ mapdata={
 }
 
 bart = {
-    'color':'#BBBB77',
+    'color':'#999999',
     'width':fg/2,
     'points':[
         (1000,-210,fg),
@@ -72,7 +72,7 @@ m_line = {
         (-540,405-g54),
     ]
 }
-m_line_n_branch = {
+n_branch = {
     'color':'#00FF00',
     'width':fg/2,
     'points':[
@@ -84,7 +84,7 @@ m_line_n_branch = {
         (-500,270),
     ]
 }
-m_line_j_branch = {
+j_branch = {
     'color':'#00FF00',
     'width':fg/2,
     'points':[
@@ -109,7 +109,7 @@ j_line = {
         (-440,330-g54+fg),
     ]
 }
-f_line = {
+f_line_ext = {
     'color':'#FFFF00',
     'width':fg/2,
     'points':[
@@ -119,15 +119,7 @@ f_line = {
         (-440+fg,-450,fg),
         (-440+fg,380,fg),
         (-90+g53,380,fg),
-        (270+g35,110+g45,2*fg),
-        (270+fg,110,2*fg),
-        (270+fg,-70+40/3,2*fg),
-        (270+g45,-70+40/3-g35,2*fg),
-        (-25-g34+g54,-450-fg,fg),
-        (-100,-450-fg,fg/2),
-        (-100,-450,fg/2),
-        (-25+g54,-450,fg),
-        (-25+g54+g35,-450+g45,fg),
+        (150+g35-g45,200+g45+g35,fg),
     ],
     'stops':[
         (-200,-450),
@@ -142,6 +134,24 @@ f_line = {
         (-280-fg,380),
         (-90,380),
         (30+g35,290+g45),
+    ]
+}
+f_line = {
+    'color':'#FFFF00',
+    'width':fg/2,
+    'points':[
+        (150+g35-g45,200+g45+g35,fg),
+        (270+g35,110+g45,2*fg),
+        (270+fg,110,2*fg),
+        (270+fg,-70+40/3,2*fg),
+        (270+g45,-70+40/3-g35,2*fg),
+        (-25-g34+g54,-450-fg,fg),
+        (-100,-450-fg,fg/2),
+        (-100,-450,fg/2),
+        (-25+g54,-450,fg),
+        (-25+g54+g35,-450+g45,fg),
+    ],
+    'stops':[
         (150+g35-g45,200+g45+g35),
         (230+g35,140+g45),
         (270+fg,40),
@@ -153,7 +163,7 @@ f_line = {
         (-30,-450),
     ]
 }
-f_line_ext = {
+f_line_exp = {
     'color':'#FFFF00',
     'width':fg/2,
     'points':[
@@ -254,7 +264,7 @@ w_line = {
         ]
 }
 caltrain = {
-    'color':'#AAAAAA',
+    'color':'#CCCCCC',
     'width':fg/4,
     'points':[
         (150,1000,2*fg),
@@ -272,7 +282,7 @@ caltrain = {
     ]
 }
 newtrain = {
-    'color':'#AAAAAA',
+    'color':'#CCCCCC',
     'width':fg/4,
     'points':[
         (190,-80,2*fg),
@@ -288,19 +298,26 @@ newtrain = {
     ]
 }
 
+phase = 2
+# Phase 0 is existing
+# Phase 1 is reroutes and retrofits
+# Phase 2 is planned projects and extensions
+# Phase 3+ are new projects and expansions
+
 mapdata['lines']['Bart'] = bart
 mapdata['lines']['M Line'] = m_line
-mapdata['lines']['M Line N Branch'] = m_line_n_branch
-mapdata['lines']['M Line J Branch'] = m_line_j_branch
-mapdata['lines']['F Line'] = f_line
-mapdata['lines']['F Line Ext'] = f_line_ext
-mapdata['lines']['J Line'] = j_line
+mapdata['lines']['N Line'] = n_branch
 mapdata['lines']['C Line'] = c_line
-mapdata['lines']['C Line Ext'] = c_line_ext
-mapdata['lines']['G Line'] = g_line
-mapdata['lines']['W Line'] = w_line
 mapdata['lines']['Caltrain'] = caltrain
-mapdata['lines']['New Train'] = newtrain
+if phase < 1: mapdata['lines']['M Line J Branch'] = j_branch
+if phase > 0: mapdata['lines']['F Line'] = f_line
+if phase > 1: mapdata['lines']['F Line Ext'] = f_line_ext
+if phase > 2: mapdata['lines']['F Line Exp'] = f_line_exp
+if phase > 0: mapdata['lines']['J Line'] = j_line
+if phase > 1: mapdata['lines']['C Line Ext'] = c_line_ext
+if phase > 2: mapdata['lines']['G Line'] = g_line
+if phase > 3: mapdata['lines']['W Line'] = w_line
+if phase > 3: mapdata['lines']['New Train'] = newtrain
 
 filename = 'outputs/SanFrancisco_map.svg'
 drawing=create_map(mapdata, filename, grid=1)
