@@ -52,14 +52,17 @@ m_line = {
     'color':'#00FF00',
     'width':fg/2,
     'points':[
-        (150,200,fg),
+        (150-g45,200+g35,fg),
         (270,110,fg),
         (270,-70+40/3,fg),
-        (200-g35,-150-g45,fg),
-        (-600-g53,450,fg)
+        [
+            (230,-110,fg),
+            (200-g35,-150-g45,fg),
+            (-600-g53,450,fg)
+        ],
     ],
     'stops':[
-        (150,200),
+        (150-g45,200+g35),
         (230,140),
         (270,40),
         (260,-70),
@@ -74,7 +77,7 @@ m_line = {
 }
 n_branch = {
     'color':'#00FF00',
-    'width':fg/2,
+    'width':fg/3,
     'points':[
         (180-g35,-135-g45,fg),
         (-360-g53,270,fg),
@@ -86,7 +89,7 @@ n_branch = {
 }
 j_branch = {
     'color':'#00FF00',
-    'width':fg/2,
+    'width':fg/3,
     'points':[
         (180-g35,-135-g45,fg),
         (-360-g53,270,fg),
@@ -113,7 +116,7 @@ f_line = {
     'color':'#FFFF00',
     'width':fg/2,
     'points':[
-        (150+g35,200+g45,fg),
+        (150+g35-g45,200+g45+g35,fg),
         (270+g35,110+g45,2*fg),
         (270+fg,110,2*fg),
         (270+fg,-70+40/3,2*fg),
@@ -125,7 +128,7 @@ f_line = {
         (-25+g54+g35,-450+g45,fg),
     ],
     'stops':[
-        (150+g35,200+g45),
+        (150+g35-g45,200+g45+g35),
         (230+g35,140+g45),
         (270+fg,40),
         (260+g45,-70-g35),
@@ -345,8 +348,18 @@ newtrain = {
         (-620,-60-fg),
     ]
 }
+tunnels = {
+    'color':mapdata['style']['background']['color'],
+    'width':fg/6,
+    'points':[
+        (180-g35,-135-g45,fg),
+        (-360-g53,270,fg),
+    ],
+    'stops':[
+    ]
+}
 
-phase = 2
+phase = 0
 # Phase 0 is existing
 # Phase 1 is reroutes and retrofits
 # Phase 2 is planned projects and extensions
@@ -357,8 +370,8 @@ mapdata['lines']['M Line'] = m_line
 mapdata['lines']['N Line'] = n_branch
 mapdata['lines']['C Line'] = c_line
 mapdata['lines']['Caltrain'] = caltrain
+mapdata['lines']['F Line'] = f_line
 if phase < 1: mapdata['lines']['J Branch'] = j_branch
-if phase > 0: mapdata['lines']['F Line'] = f_line
 if phase > 1: mapdata['lines']['C Line Ext'] = c_line_ext
 if phase > 2: mapdata['lines']['F Line Ext'] = f_line_ext
 if phase > 3: mapdata['lines']['F Line Exp'] = f_line_exp
@@ -370,6 +383,7 @@ if phase > 3: mapdata['lines']['W Line'] = w_line
 if phase > 1: mapdata['lines']['Portal'] = portal
 if phase > 2: mapdata['lines']['Link21'] = link21
 if phase > 3: mapdata['lines']['New Train'] = newtrain
+# mapdata['lines']['Tunnels'] = tunnels
 
 filename = 'outputs/SanFrancisco_map.svg'
 drawing=create_map(mapdata, filename, grid=1)
