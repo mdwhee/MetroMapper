@@ -95,9 +95,6 @@ def lines(mapdata, lgrp, sgrp):
         raw_points = linedata.get('points', [])
         center_stripe_width = linedata.get('center_stripe_width', width / 3)
 
-        if len(raw_points) < 2:
-            raise ValueError("Need at least two points for a path")
-
         # Flatten points and record tunnel index ranges
         pts = []
         tunnels = []  # list of (start_idx, end_idx) into pts

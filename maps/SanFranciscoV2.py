@@ -34,10 +34,12 @@ bart = {
     'color':'#999999',
     'width':fg/2,
     'points':[
-        (1000,-210,fg),
-        (280,-210,10*fg),
-        (-280,210,10*fg),
-        (-280,800,fg)
+        [
+            (1000,-210,fg),
+            (280,-210,10*fg),
+            (-280,210,10*fg),
+            (-280,800,fg)
+        ],
     ],
     'stops':[
         (180,-135),
@@ -365,12 +367,6 @@ phase = 0
 # Phase 2 is planned projects and extensions
 # Phase 3+ are new projects and expansions
 
-mapdata['lines']['Bart'] = bart
-mapdata['lines']['M Line'] = m_line
-mapdata['lines']['N Line'] = n_branch
-mapdata['lines']['C Line'] = c_line
-mapdata['lines']['Caltrain'] = caltrain
-mapdata['lines']['F Line'] = f_line
 if phase < 1: mapdata['lines']['J Branch'] = j_branch
 if phase > 1: mapdata['lines']['C Line Ext'] = c_line_ext
 if phase > 2: mapdata['lines']['F Line Ext'] = f_line_ext
@@ -383,6 +379,12 @@ if phase > 3: mapdata['lines']['W Line'] = w_line
 if phase > 1: mapdata['lines']['Portal'] = portal
 if phase > 2: mapdata['lines']['Link21'] = link21
 if phase > 3: mapdata['lines']['New Train'] = newtrain
+mapdata['lines']['Bart'] = bart
+mapdata['lines']['N Line'] = n_branch
+mapdata['lines']['M Line'] = m_line
+mapdata['lines']['C Line'] = c_line
+mapdata['lines']['Caltrain'] = caltrain
+mapdata['lines']['F Line'] = f_line
 # mapdata['lines']['Tunnels'] = tunnels
 
 filename = 'outputs/SanFrancisco_map.svg'
